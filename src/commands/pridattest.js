@@ -1,4 +1,5 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder} from '@discordjs/builders';
+import { PermissionFlagsBits } from 'discord.js';
 
  const pridatTesty = new SlashCommandBuilder()
  .setName('pridat-test')
