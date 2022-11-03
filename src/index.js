@@ -10,6 +10,8 @@ import ukazatUkoly from './commands/ukoly.js';
 import ukazatTesty from './commands/testy.js';
 import pridatUkol from './commands/pridatukol.js';
 import pridatTest from './commands/pridattest.js';
+import smazatUkol from './commands/smazatukol.js';
+import smazatTest from './commands/smazattest.js';
 
 
 const client = new Client({
@@ -38,6 +40,7 @@ const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN);
 
 client.on("ready", () => {
     console.log(`${client.user.tag} běží.`);
+    client.user.setPresence({ activity: { name: 'Poslouchám vaše úkoly'}, status: 'online'});
 });
 
 client.on('interactionCreate', async (interaction) => {
@@ -103,11 +106,31 @@ client.on('interactionCreate', async (interaction) => {
         interaction.reply({ content: 'Chyba.'});
       }
       }
+      if (interaction.commandName === 'smazatukol') {
+        const cislo = interaction.options.get('ukol').value;
+        try {
+          await Ukolys.deleteOne({ dokdy: cislo });
+          await interaction.reply({ content: 'Smazáno.', fetchReply: true});
+        } catch (err) {
+          console.log(err);
+          interaction.reply({ content: 'Chyba.' });
+        }
+      }
+      if (interaction.commandName === 'smazat-test') {
+        const cislo = interaction.options.get('test').value;
+        try {
+          await Testys.deleteOne({ kdy: cislo });
+          await interaction.reply({ content: 'Smazáno.', fetchReply: true});
+        } catch (err) {
+          console.log(err);
+          interaction.reply({ content: 'Chyba.' });
+        }
     }
+  }
 });
 
 async function main() {
-    const commands = [ukazatUkoly, pridatTest, ukazatTesty, pridatUkol];
+    const commands = [ukazatUkoly, pridatTest, ukazatTesty, pridatUkol, smazatUkol, smazatTest];
     try {
      await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
         body: commands,
