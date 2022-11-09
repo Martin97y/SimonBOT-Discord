@@ -6,12 +6,13 @@ import { REST } from '@discordjs/rest';
 import Ukolys from './schemas/ukoly.js';
 import Testys from './schemas/testy.js';
 
+import smazatUkol from './commands/smazatukol.js';
+import smazatTest from './commands/smazattest.js';
 import ukazatUkoly from './commands/ukoly.js';
 import ukazatTesty from './commands/testy.js';
 import pridatUkol from './commands/pridatukol.js';
 import pridatTest from './commands/pridattest.js';
-import smazatUkol from './commands/smazatukol.js';
-import smazatTest from './commands/smazattest.js';
+
 
 
 const client = new Client({
@@ -130,7 +131,7 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 async function main() {
-    const commands = [ukazatUkoly, pridatTest, ukazatTesty, pridatUkol, smazatUkol, smazatTest];
+    const commands = [ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
     try {
      await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
         body: commands,
