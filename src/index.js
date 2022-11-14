@@ -1,19 +1,22 @@
 import { config } from 'dotenv';
-import { Client, Routes, GatewayIntentBits } from 'discord.js';
+import { Client, Routes, GatewayIntentBits, } from 'discord.js';
 import { mongoose } from 'mongoose';
 import { REST } from '@discordjs/rest';
 
 import Ukolys from './schemas/ukoly.js';
 import Testys from './schemas/testy.js';
 
+import restart from './commands/restart.js';
 import smazatUkol from './commands/smazatukol.js';
 import smazatTest from './commands/smazattest.js';
 import ukazatUkoly from './commands/ukoly.js';
 import ukazatTesty from './commands/testy.js';
 import pridatUkol from './commands/pridatukol.js';
 import pridatTest from './commands/pridattest.js';
-
-
+import activity from './events/activity.js';
+import pickPresence from './events/tools/pickPresence.js';
+import checkBot from './functions/checkbotfunctions.js';
+import checkbotfunctions from './functions/checkbotfunctions.js';
 
 const client = new Client({
     intents: [
@@ -41,8 +44,10 @@ const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN);
 
 client.on("ready", () => {
     console.log(`${client.user.tag} běží.`);
-    client.user.setPresence({ activity: { name: 'Poslouchám vaše úkoly'}, status: 'online'});
+    checkBot.execute(client);
 });
+
+let checki = false;
 
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isChatInputCommand()) {
@@ -127,19 +132,34 @@ client.on('interactionCreate', async (interaction) => {
           interaction.reply({ content: 'Chyba.' });
         }
     }
+    if (interaction.commandName === 'restart') {
+      try {
+        await interaction.reply({ content: 'Trying to restart...', fetchReply: true});
+        client.destroy();
+        checki = false;
+        activity.check = false;
+        main();
+        checkBot.execute(client);
+      } catch (err) {
+        console.log(err);
+        interaction.reply({ content: 'Chyba.' });
+      }
+   }
   }
 });
 
 async function main() {
-    const commands = [ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
+    client.login(DISCORD_BOT_TOKEN);
+    checki = true;
+    const commands = [ restart,ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
     try {
      await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
         body: commands,
      });
-    client.login(DISCORD_BOT_TOKEN);
+     
     } catch (err) {
         console.log(err);
     } 
 }
-
+export default checki;
 main();
