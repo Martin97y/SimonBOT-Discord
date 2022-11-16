@@ -6,4 +6,4 @@ import { PermissionFlagsBits } from 'discord.js';
  .setDescription('Restartuje bota.')
  .setDefaultMemberPermissions(PermissionFlagsBits.PrioritySpeaker)
 
-export default pridatTesty.toJSON();
+export default restartBot.toJSON();

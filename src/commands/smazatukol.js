@@ -7,4 +7,4 @@ import { PermissionFlagsBits } from 'discord.js';
  .setDefaultMemberPermissions(PermissionFlagsBits.PrioritySpeaker)
  .addStringOption((option) => option.setName('ukol').setDescription('Číslo').setRequired(true))
 
-export default ukazatTesty.toJSON();
+export default smazatUkol.toJSON();
