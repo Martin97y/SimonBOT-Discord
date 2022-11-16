@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord.js';
 
- const ukazatTesty = new SlashCommandBuilder()
+ const smazattest = new SlashCommandBuilder()
  .setName('smazat-test')
  .setDescription('Smaže test.')
  .setDefaultMemberPermissions(PermissionFlagsBits.PrioritySpeaker)
