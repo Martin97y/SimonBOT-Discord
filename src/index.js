@@ -6,7 +6,7 @@ import { REST } from '@discordjs/rest';
 import Ukolys from './schemas/ukoly.js';
 import Testys from './schemas/testy.js';
 
-import restart from './commands/restart.js';
+import restartBot from './commands/restartBot.js';
 import smazatUkol from './commands/smazatukol.js';
 import smazatTest from './commands/smazattest.js';
 import ukazatUkoly from './commands/ukoly.js';
@@ -151,7 +151,7 @@ client.on('interactionCreate', async (interaction) => {
 async function main() {
     client.login(DISCORD_BOT_TOKEN);
     checki = true;
-    const commands = [ restart,ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
+    const commands = [restartBot,ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
     try {
      await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
         body: commands,
