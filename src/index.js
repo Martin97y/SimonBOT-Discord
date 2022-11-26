@@ -2,6 +2,8 @@ import { config } from 'dotenv';
 import { Client, Routes, GatewayIntentBits, } from 'discord.js';
 import { mongoose } from 'mongoose';
 import { REST } from '@discordjs/rest';
+import express from 'express';
+import path from 'path';
 
 import Ukolys from './schemas/ukoly.js';
 import Testys from './schemas/testy.js';
@@ -17,6 +19,14 @@ import activity from './events/activity.js';
 import pickPresence from './events/tools/pickPresence.js';
 import checkBot from './functions/checkbotfunctions.js';
 import checkbotfunctions from './functions/checkbotfunctions.js';
+
+const app = express();
+app.use(express.json())
+var port = process.env.PORT || 8080
+
+app.get('/', function(request, response)  {
+  response.send('OK');
+})
 
 const client = new Client({
     intents: [
@@ -161,5 +171,10 @@ async function main() {
         console.log(err);
     } 
 }
+
+app.listen(port, function() {
+  console.log('App listening on port:', port);
+});
+
 export default checki;
 main();

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6f1712db-fbca-4a3d-8f92-07362ad7d66f/appservices/subscriptions/6f1712db-fbca-4a3d-8f92-07362ad7d66f/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/skolabot",
+    "appService.deploySubpath": "."
+}
