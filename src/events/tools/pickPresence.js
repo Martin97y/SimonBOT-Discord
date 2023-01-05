@@ -7,7 +7,7 @@ export default (client) => {
             activities: [
                 {
                     name: options[option].text,
-                    name: options[option].type,
+                    type: options[option].type,
                 },
           ],
           status: options[option].status,             

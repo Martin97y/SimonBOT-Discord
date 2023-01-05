@@ -5,10 +5,10 @@ export default {
     check: false,
     async execute(client) {
         const statutsArray = [{
-            type: ActivityType.Watching,
-            text: "Davidovu ass",
-            status: "online"
-          },
+        type: ActivityType.Watching,
+        text: "Davidovu ass",
+        status: "online"
+        },
         {
         type: ActivityType.Competing,
         text: "Děláním ničeho",

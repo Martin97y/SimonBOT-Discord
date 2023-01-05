@@ -1,4 +1,4 @@
-import { ThreadChannel } from 'discord.js';
+import { ThreadChannel, EmbedBuilder } from 'discord.js';
 import activity from '../events/activity.js';
 import checki from '../index.js';
 
