@@ -45,7 +45,6 @@ typings/
 
 # Optional npm cache directory
 .npm
-
 # Optional eslint cache
 .eslintcache
 
@@ -60,6 +59,7 @@ typings/
 
 # dotenv environment variables file
 .env
+env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)

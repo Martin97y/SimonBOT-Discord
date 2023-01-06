@@ -1,6 +1,6 @@
 //IMPORTS
 import { config } from 'dotenv';
-import { Client, Routes, GatewayIntentBits, Embed, EmbedBuilder } from 'discord.js';
+import { Client, Routes, GatewayIntentBits, Embed, EmbedBuilder, Message } from 'discord.js';
 import { mongoose } from 'mongoose';
 import { REST } from '@discordjs/rest';
 import express, { request } from 'express';
@@ -8,25 +8,27 @@ import path from 'path';
 import fs from 'fs';
 import Ukolys from './schemas/ukoly.js';
 import Testys from './schemas/testy.js';
+import Guilds from './schemas/guilds.js';
 import restartBot from './commands/restartBot.js';
 import smazatUkol from './commands/smazatukol.js';
 import smazatTest from './commands/smazattest.js';
 import ukazatUkoly from './commands/ukoly.js';
 import ukazatTesty from './commands/testy.js';
 import pridatUkol from './commands/pridatukol.js';
-import pridatTest from './commands/pridattest.js';
 import activity from './events/activity.js';
+import pridatTest from './commands/pridattest.js';
 import pickPresence from './events/tools/pickPresence.js';
 import checkBot from './functions/checkbotfunctions.js';
 import checkbotfunctions from './functions/checkbotfunctions.js';
 import { channel } from 'diagnostics_channel';
 import { count } from 'console';
 import { start } from 'repl';
+import testy from './schemas/testy.js';
 //-------------------------------------------------------------------------
 const app = express();
 app.use(express.json())
 var port = process.env.PORT || 8080
-
+var guildss = [];
 app.get('/', function(request, response)  {
   response.send('OK');
 })
@@ -43,7 +45,6 @@ config();
 
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-const GUILD_ID = process.env.GUILD_ID;
 
 //CONNECT DB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -57,8 +58,9 @@ const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN);
 //ON READY
 client.on("ready", () => {
     console.log(`${client.user.tag} běží.`);
-    checkBot.execute(client);
-});
+    //checkBot.execute(client);
+    activity.execute(client);
+  });
 
 let checki = false;
 
@@ -66,17 +68,39 @@ let checki = false;
 var accessToken = "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";
 
 
+//MESSAGES
+client.on('messageCreate', async (message)  => {
+  if (message.content === '!setup') {
+    const g = await Guilds.find({});
+    for (const i in g) {
+      guildss.push(g[i].guild)
+     }
+    console.log(guildss);
+    const id = message.guildId;
+    if (guildss.includes(id)) {
+      return message.reply('Already setup');
+    } else {
+      await Guilds.create({
+        guild: id,
+      })
+      slash();
+      return message.reply('Done setup');
+    }
+   }
+})
 
 
 //INTERACTIONS
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isChatInputCommand()) {
       if (interaction.commandName === 'ukoly') {
+        const guild = interaction.guildId;
         try {
-         const ukoly = await Ukolys.find({});
+         const ukoly = await Ukolys.find({guild});
+         const desc = interaction.user.username; 
          let description = "";
          for (const i in ukoly) {
-            description += `${parseInt(i) + 1}) ${ukoly[i].ukol} | Do Kdy: ${ukoly[i].dokdy}\n | Přidal/a: ${testy[i].kdo}`;
+            description += `${parseInt(i) + 1}) ${ukoly[i].ukol} | Do Kdy: ${ukoly[i].dokdy} | Přidal/a: ${ukoly[i].kdo}\n`;
          }
          if (description == 0) {
             return interaction.reply("Prázdno");
@@ -95,7 +119,8 @@ client.on('interactionCreate', async (interaction) => {
       }
       if (interaction.commandName === 'testy') {
         try {
-         const testy = await Testys.find({});
+         const guild = interaction.guildId;
+         const testy = await Testys.find({guild});
          const desc = interaction.user.username; 
          let description = "";
          for (const i in testy) {
@@ -125,12 +150,14 @@ client.on('interactionCreate', async (interaction) => {
         const datum = interaction.options.get('dokdy').value;
         const kdo = interaction.user.username;
         const desc = interaction.user.username; 
+        const guild = interaction.guildId;
 
         try {
           await Ukolys.create({
             ukol: ukol,
             dokdy: datum,
             kdo: kdo,
+            guild: guild,
           })
           const sendpridatukolEmbed = new EmbedBuilder()
           .setColor(15277667)
@@ -149,12 +176,14 @@ client.on('interactionCreate', async (interaction) => {
         const kdy = interaction.options.get('kdy').value;
         const kdo = interaction.user.username;
         const desc = interaction.user.username; 
+        const guild = interaction.guildId;
 
         try {
           await Testys.create({
             test: test,
             kdy: kdy,
             kdo: kdo,
+            guild: guild,
           })
           const sendpridattestEmbed = new EmbedBuilder()
           .setColor(15277667)
@@ -169,9 +198,10 @@ client.on('interactionCreate', async (interaction) => {
       }
       }
       if (interaction.commandName === 'smazatukol') {
+        const guild = interaction.guildId;
         const cislo = interaction.options.get('ukol').value;
         try {
-          await Ukolys.deleteOne({ dokdy: cislo });
+          await Ukolys.deleteOne({ guild: guild, dokdy: cislo });
           await interaction.reply({ content: 'Smazáno.', fetchReply: true});
         } catch (err) {
           console.log(err);
@@ -180,8 +210,9 @@ client.on('interactionCreate', async (interaction) => {
       }
       if (interaction.commandName === 'smazat-test') {
         const cislo = interaction.options.get('test').value;
+        const guild = interaction.guildId;
         try {
-          await Testys.deleteOne({ kdy: cislo });
+          await Testys.findOneAndDelete({ guild: guild, kdy: cislo });
           await interaction.reply({ content: 'Smazáno.', fetchReply: true});
         } catch (err) {
           console.log(err);
@@ -210,19 +241,28 @@ client.on('interactionCreate', async (interaction) => {
     }
   }
 });
+//SLASH COMMANDS
+async function slash() {
+  const g = await Guilds.find({});
+    for (const i in g) {
+      guildss.push(g[i].guild)
+     }
+  const commands = [restartBot,ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
+  try {
+    guildss.forEach(async (guildID) => {
+      await rest.put(Routes.applicationGuildCommands(CLIENT_ID, guildID), {
+        body: commands,
+     });
+    });
+  } catch (err) {
+    console.log(err);
+ } 
+}
 //MAIN STARTUP
 async function main() {
     client.login(DISCORD_BOT_TOKEN);
     checki = true;
-    const commands = [restartBot,ukazatUkoly,pridatTest,ukazatTesty,pridatUkol,smazatUkol,smazatTest];
-    try {
-     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
-        body: commands,
-     });
-     
-    } catch (err) {
-        console.log(err);
-    } 
+    slash();
 }
 
 //LISTEN ON PORT
