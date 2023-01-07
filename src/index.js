@@ -110,7 +110,7 @@ client.on('interactionCreate', async (interaction) => {
          .setColor(15277667)
          .setTitle('Úkoly')
          .setDescription(description)
-         .setFooter({ text: `Použil/a ${desc}`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
+         .setFooter({ text: `Použil/a ${desc} | Ping: ${Date.now() - interaction.createdTimestamp}ms`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
 
        await interaction.reply({embeds: [sendukolyEmbed]});
         } catch (err) {
@@ -134,7 +134,7 @@ client.on('interactionCreate', async (interaction) => {
             .setColor(15277667)
             .setTitle('Testy')
             .setDescription(description)
-            .setFooter({ text: `Použil/a ${desc}`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
+            .setFooter({ text: `Použil/a ${desc} | Ping: ${Date.now() - interaction.createdTimestamp}ms`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
 
           await interaction.reply({embeds: [sendtestyEmbed]});
           
@@ -163,7 +163,7 @@ client.on('interactionCreate', async (interaction) => {
           .setColor(15277667)
           .setTitle('Úkoly')
           .setDescription(`Přidáno: ${ukol}`)
-          .setFooter({ text: `Použil/a ${desc}`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
+          .setFooter({ text: `Použil/a ${desc} | Ping: ${Date.now() - interaction.createdTimestamp}ms`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
 
         await interaction.reply({embeds: [sendpridatukolEmbed]});
       } catch (err) {
@@ -189,7 +189,7 @@ client.on('interactionCreate', async (interaction) => {
           .setColor(15277667)
           .setTitle('Testy')
           .setDescription(`Přidáno: ${test}`)
-          .setFooter({ text: `Použil/a ${desc}`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
+          .setFooter({ text: `Použil/a ${desc} | Ping: ${Date.now() - interaction.createdTimestamp}ms`, iconURL: 'https://cdn.discordapp.com/avatars/'+interaction.user.id+'/'+interaction.user.avatar+'.jpeg' });
 
         await interaction.reply({embeds: [sendpridattestEmbed]});
       } catch (err) {
