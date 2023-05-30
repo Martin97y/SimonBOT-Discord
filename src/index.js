@@ -1,4 +1,4 @@
-//IMPORTS
+//IMPORT Knihovny, scripty, cesty
 import { config } from 'dotenv';
 import { Client, Routes, GatewayIntentBits, Embed, EmbedBuilder, Message } from 'discord.js';
 import { mongoose } from 'mongoose';
@@ -25,6 +25,7 @@ import { count } from 'console';
 import { start } from 'repl';
 import testy from './schemas/testy.js';
 //-------------------------------------------------------------------------
+//STATUS
 const app = express();
 app.use(express.json())
 var port = process.env.PORT || 8080
@@ -46,7 +47,7 @@ config();
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 
-//CONNECT DB
+//Připojit databázi
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -55,7 +56,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).catch((err) => console.log(err));
 
 const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN);
-//ON READY
+//Když je připraven
 client.on("ready", () => {
     console.log(`${client.user.tag} běží.`);
     //checkBot.execute(client);
@@ -64,11 +65,11 @@ client.on("ready", () => {
 
 let checki = false;
 
-//CHECK UPDATES
+//Zkontrolovat Updaty
 var accessToken = "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";
 
 
-//MESSAGES
+//Zprávy
 client.on('messageCreate', async (message)  => {
   if (message.content === '!setup') {
     const g = await Guilds.find({});
@@ -90,7 +91,7 @@ client.on('messageCreate', async (message)  => {
 })
 
 
-//INTERACTIONS
+//Interakce pomocí / commandů
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isChatInputCommand()) {
       if (interaction.commandName === 'ukoly') {
@@ -258,14 +259,14 @@ async function slash() {
     console.log(err);
  } 
 }
-//MAIN STARTUP
+//Hlavní spuštění
 async function main() {
     client.login(DISCORD_BOT_TOKEN);
     checki = true;
     slash();
 }
 
-//LISTEN ON PORT
+//Poslouchat na portu
 app.listen(port, function() {
   console.log('App listening on port:', port);
 });
