@@ -91,7 +91,7 @@ client.on('messageCreate', async (message)  => {
 })
 
 
-//Interakce pomocí / commandů
+//Interakce pomocí / slash commandů
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isChatInputCommand()) {
       if (interaction.commandName === 'ukoly') {
