@@ -14,10 +14,10 @@ jobs:
 
     runs-on: self-hosted
     env:
-      DISCORD_BOT_TOKEN: MTAzMjI3MjA2NjE1NTY1OTMzNQ.G7zPlU.EKLBdh20lbjHVEUY86eB-ltXPKTKnfb1rjSeT8
-      CLIENT_ID: 1032272066155659335
-      GUILD_ID: 1032274481131040888
-      MONGODB_URI: mongodb+srv://msOS:UGWW7Mys3Cxih4tF@accountmanager.b2vkp4o.mongodb.net/
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      GUILD_ID: ${{ secrets.GUILD_ID }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
       
     strategy:
       matrix:
