@@ -13,7 +13,9 @@ jobs:
   build:
 
     runs-on: self-hosted
-      
+    environment: 
+      name: Production
+      url: 'http://130.162.57.32:8080'
     strategy:
       matrix:
         node-version: [19.x]
