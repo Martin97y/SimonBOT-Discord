@@ -33,7 +33,7 @@ jobs:
   
   DeployProd:
     name: Deploy to Production 
-    needs: [Build]
+    needs: [DeployStaging]
     runs-on: self-hosted
     environment: 
       name: Production
