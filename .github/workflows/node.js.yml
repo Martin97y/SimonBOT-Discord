@@ -32,7 +32,12 @@ jobs:
     steps:
       - name: Deploy            
         run: node -v
-          
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo DB_TOKEN=${{ secrets.DB_TOKEN }} >> .env
+          cat .env
+  
   DeployProduction:
     name: Deploy to Production 
     needs: [DeployStaging]
