@@ -36,6 +36,8 @@ jobs:
         run: |
           touch .env
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+          echo DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} >> .env
+          echo CLIENT_ID=${{ secrets.CLIENT_ID }} >> .env
           cat .env
   
   DeployProduction:
