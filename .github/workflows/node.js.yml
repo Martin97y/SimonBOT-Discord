@@ -28,8 +28,7 @@ jobs:
     environment: 
       name: Staging
     steps:
-      - name: Deploy
-        run: echo I am deploying!             
+      - name: Deploy            
   
   DeployProd:
     name: Deploy to Production 
