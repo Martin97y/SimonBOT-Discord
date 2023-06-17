@@ -30,7 +30,11 @@ jobs:
     steps:
       - name: Deploy            
         run: node -v
-      
+      - name: Create .envs file
+  # You may pin to the exact commit or the version.
+  # uses: joseEnrique/create-envfile@2445462ede0368720e84e564f89ff827a73935ac
+        uses: joseEnrique/create-envfile@0.0.1
+        
   DeployProd:
     name: Deploy to Production 
     needs: [DeployStaging]
