@@ -21,7 +21,7 @@ export default {
         },
         {
         type: ActivityType.Listening,
-        text: "Depressed songy",
+        text: "Phonk",
         status: "online"
         },
         {

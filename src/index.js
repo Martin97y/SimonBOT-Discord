@@ -4,8 +4,6 @@ import { Client, Routes, GatewayIntentBits, Embed, EmbedBuilder, Message } from 
 import { mongoose } from 'mongoose';
 import { REST } from '@discordjs/rest';
 import express, { request } from 'express';
-import path from 'path';
-import fs from 'fs';
 import Ukolys from './schemas/ukoly.js';
 import Testys from './schemas/testy.js';
 import Guilds from './schemas/guilds.js';
@@ -17,12 +15,7 @@ import ukazatTesty from './commands/testy.js';
 import pridatUkol from './commands/pridatukol.js';
 import activity from './events/activity.js';
 import pridatTest from './commands/pridattest.js';
-import pickPresence from './events/tools/pickPresence.js';
 import checkBot from './functions/checkbotfunctions.js';
-import checkbotfunctions from './functions/checkbotfunctions.js';
-import { channel } from 'diagnostics_channel';
-import { count } from 'console';
-import { start } from 'repl';
 import testy from './schemas/testy.js';
 //-------------------------------------------------------------------------
 //STATUS
