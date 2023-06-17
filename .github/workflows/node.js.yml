@@ -29,7 +29,8 @@ jobs:
       name: Staging
     steps:
       - name: Deploy            
-      - run: node -v
+        run: node -v
+      
   DeployProd:
     name: Deploy to Production 
     needs: [DeployStaging]
