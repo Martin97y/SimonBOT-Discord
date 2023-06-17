@@ -18,6 +18,8 @@ jobs:
     steps:
         - name: Build
           uses: actions/checkout@v3
+          with:
+            clean: 'false'
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         
   DeployStaging:
@@ -30,10 +32,6 @@ jobs:
     steps:
       - name: Deploy            
         run: node -v
-      - name: Create .envs file
-        uses: sudo joseEnrique/create-envfile@0.0.1
-        with:
-          directory: /
           
   DeployProd:
     name: Deploy to Production 
