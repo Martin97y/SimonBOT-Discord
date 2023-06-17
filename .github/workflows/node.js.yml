@@ -31,7 +31,7 @@ jobs:
       - name: Deploy            
         run: node -v
       - name: Create .envs file
-        uses: joseEnrique/create-envfile@0.0.1
+        uses: sudo joseEnrique/create-envfile@0.0.1
         with:
           directory: /
           
