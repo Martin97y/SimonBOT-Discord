@@ -35,7 +35,7 @@ jobs:
       - name: 'Create env file'
         run: |
           touch .env
-          echo DB_TOKEN=${{ secrets.DB_TOKEN }} >> .env
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
           cat .env
   
   DeployProduction:
