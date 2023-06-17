@@ -33,7 +33,7 @@ jobs:
       - name: Deploy            
         run: node -v
           
-  DeployProd:
+  DeployProduction:
     name: Deploy to Production 
     needs: [DeployStaging]
     runs-on: self-hosted
