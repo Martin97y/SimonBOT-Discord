@@ -10,23 +10,46 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  Build:
     runs-on: self-hosted
-      
     strategy:
       matrix:
         node-version: [19.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-      
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-      
-    - run: npm i
-    - run: npm run build --if-present
-    - run: pm2 restart SimonBOT
+        - name: Build
+          uses: actions/checkout@v3
+          with:
+            clean: 'false'
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        
+  DeployStaging:
+    name: Deploy to Staging 
+    if: github.event.ref == 'refs/heads/master'
+    needs: [Build]
+    runs-on: self-hosted
+    environment: 
+      name: Staging
+    steps:
+      - name: Deploy            
+        run: node -v
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+          echo DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} >> .env
+          echo CLIENT_ID=${{ secrets.CLIENT_ID }} >> .env
+          cat .env
+  
+  DeployProduction:
+    name: Deploy to Production 
+    needs: [DeployStaging]
+    runs-on: self-hosted
+    environment: 
+      name: Production
+      url: 'http://130.162.57.32:8080'
+    steps:
+     - name: Use Node.js ${{ matrix.node-version }}
+       uses: actions/setup-node@v3     
+     - run: npm i
+     - run: npm run build --if-present 
+     - run: npx pm2 restart SimonBOT
