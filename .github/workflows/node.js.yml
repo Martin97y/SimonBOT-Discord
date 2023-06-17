@@ -10,7 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  Build:
     runs-on: self-hosted
     strategy:
       matrix:
@@ -19,7 +19,7 @@ jobs:
         
   DeployProd:
     name: Deploy to Production 
-    needs: [build]
+    needs: [Build]
     runs-on: self-hosted
     environment: 
       name: Production
