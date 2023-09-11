@@ -24,7 +24,7 @@ app.use(express.json())
 var port = process.env.PORT || 8080
 var guildss = [];
 app.get('/', function(request, response)  {
-  response.send('OK');
+  response.send('OK running');
 })
 
 const client = new Client({
